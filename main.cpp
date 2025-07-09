@@ -8,11 +8,13 @@ private:
 public:
     explicit AutoPtr(U* element = nullptr) noexcept : element(element) {}
 
+    AutoPtr(const AutoPtr& other) : element {other.element} {}
+
     ~AutoPtr() noexcept {
         delete element;
     }
 
-    U& operator=(AutoPtr& other) noexcept {
+    AutoPtr& operator=(AutoPtr& other) noexcept {
         if (this != &other) {
             delete element;
             element = other.element;
@@ -67,29 +69,24 @@ public:
         }
     }
 
-    SharedPtr(SharedPtr&& other)  noexcept
-    {
-        ptr = std::move(other.ptr);
-        ref_count = std::move(other.ref_count);
-        other.ptr = nullptr;
-        other.ref_count = nullptr;
-
-    }
 
     SharedPtr& operator=(const SharedPtr& other) {
         if (this != &other) {
             release();
-
             ptr = other.ptr;
             ref_count = other.ref_count;
-            if (ref_count) {
-                ++(*ref_count);
-            }
         }
         return *this;
     }
 
-    SharedPtr& operator=(SharedPtr&& other) noexcept = default;
+    SharedPtr& operator=(SharedPtr&& other) noexcept {
+        if (this != &other) {
+            release();
+            ptr = std::move(other.ptr);
+            ref_count = std::move(other.ref_count);
+        }
+        return *this;
+    };
 
     ~SharedPtr() {
         release();
