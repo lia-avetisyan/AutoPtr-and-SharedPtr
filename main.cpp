@@ -37,11 +37,17 @@ public:
     }
 
 
-    U* get() const noexcept { return element; }
+    U* get() const noexcept {
+        return element;
+    }
 
-    U& operator*() const noexcept { return *element; }
+    U& operator*() const noexcept {
+        return *element;
+    }
 
-    U* operator->() const noexcept { return element; }
+    U* operator->() const noexcept {
+        return element;
+    }
 
     void reset(AutoPtr* new_element = nullptr) noexcept {
         delete element;
