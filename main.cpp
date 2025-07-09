@@ -14,10 +14,23 @@ public:
         delete element;
     }
 
+    AutoPtr(AutoPtr&& other) noexcept : element {other.element} {
+        other.element = nullptr;
+    }
+
     AutoPtr& operator=(AutoPtr& other) noexcept {
         if (this != &other) {
             delete element;
             element = other.element;
+            other.element = nullptr;
+        }
+        return *this;
+    }
+
+    AutoPtr& operator=(AutoPtr&& other) noexcept {
+        if (this != &other) {
+            delete element;
+            element = std::move(other.element);
             other.element = nullptr;
         }
         return *this;
