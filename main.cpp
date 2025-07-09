@@ -105,11 +105,17 @@ public:
         release();
     }
 
-    T& operator*() const noexcept { return *ptr; }
+    T& operator*() const noexcept {
+        return *ptr;
+    }
 
-    T* operator->() const noexcept { return ptr; }
+    T* operator->() const noexcept {
+        return ptr;
+    }
 
-    T* get() const noexcept { return ptr; }
+    T* get() const noexcept {
+        return ptr;
+    }
 
     int use_count() const noexcept {
         return ref_count ? *ref_count : 0;
@@ -120,7 +126,8 @@ public:
         ptr = new_ptr;
         if (new_ptr) {
             ref_count = new int(1);
-        } else {
+        }
+        else {
             ref_count = nullptr;
         }
     }
